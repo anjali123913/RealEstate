@@ -14,20 +14,17 @@ export default function Navbar() {
   }
 
   const linkClass = ({ isActive }) =>
-    `block px-3 py-2 rounded-md text-sm font-medium ${
+    `block px-3 py-2 rounded-md text-sm font-medium transition ${
       isActive
-        ? "bg-gray-500 text-white"
-        : "text-slate-700 hover:bg-slate-100"
+        ? "bg-blue-600 text-white"
+        : "text-gray-700 hover:bg-gray-100 hover:text-blue-600"
     }`;
 
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-gray-200">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link
-          to="/"
-          className="font-bold text-xl text-brand-600"
-        >
+        <Link to="/" className="font-bold text-xl text-blue-700">
           EstatePro
         </Link>
 
@@ -42,7 +39,7 @@ export default function Navbar() {
           {user ? (
             <button
               onClick={handleLogout}
-              className="ml-2 px-3 py-2 text-sm bg-slate-800 text-white rounded-md hover:bg-slate-900"
+              className="ml-2 px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
               Logout
             </button>
@@ -60,45 +57,71 @@ export default function Navbar() {
 
         {/* Mobile toggle button */}
         <button
-          className="md:hidden p-2 rounded-md text-slate-700 hover:bg-slate-100"
+          className="md:hidden p-2 rounded-md text-blue-700 hover:bg-blue-50"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden border-t bg-white shadow-sm">
-          <nav className="flex flex-col p-2">
-            <NavLink to="/" className={linkClass} onClick={() => setIsOpen(false)}>
-              Home
-            </NavLink>
-            <NavLink to="/listings" className={linkClass} onClick={() => setIsOpen(false)}>
-              Listings
-            </NavLink>
-            {user ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setIsOpen(false);
-                }}
-                className="mt-2 px-3 py-2 text-sm bg-slate-800 text-white rounded-md hover:bg-slate-900"
+      {/* Mobile Menu - Left Sidebar */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <nav className="flex flex-col p-4 mt-10 gap-2">
+          <NavLink
+            to="/"
+            className={linkClass}
+            onClick={() => setIsOpen(false)}
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/listings"
+            className={linkClass}
+            onClick={() => setIsOpen(false)}
+          >
+            Listings
+          </NavLink>
+          {user ? (
+            <button
+              onClick={() => {
+                handleLogout();
+                setIsOpen(false);
+              }}
+              className="mt-2 px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <NavLink
+                to="/login"
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
               >
-                Logout
-              </button>
-            ) : (
-              <>
-                <NavLink to="/login" className={linkClass} onClick={() => setIsOpen(false)}>
-                  Login
-                </NavLink>
-                <NavLink to="/signup" className={linkClass} onClick={() => setIsOpen(false)}>
-                  Signup
-                </NavLink>
-              </>
-            )}
-          </nav>
-        </div>
+                Login
+              </NavLink>
+              <NavLink
+                to="/signup"
+                className={linkClass}
+                onClick={() => setIsOpen(false)}
+              >
+                Signup
+              </NavLink>
+            </>
+          )}
+        </nav>
+      </div>
+
+      {/* Overlay when menu is open */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() => setIsOpen(false)}
+        />
       )}
     </header>
   );
