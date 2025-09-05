@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function Signup() {
     }
     try {
       await createUserWithEmailAndPassword(auth, form.email, form.password);
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       alert(err.message);
     }
@@ -71,9 +71,13 @@ export default function Signup() {
           Sign Up
         </button>
       </form>
-
+<p className="text-center my-2">
+  I Have an acount <Link to="/login" className="text-blue-500 font-bold">
+login
+</Link>
+</p>
       {/* ✅ Google Auth Button */}
-      <div className="mt-6 text-center">
+      {/* <div className="mt-6 text-center">
         <p className="text-gray-600 mb-2">Or continue with</p>
         <button
           onClick={handleGoogleSignup}
@@ -86,7 +90,7 @@ export default function Signup() {
           />
           Continue with Google
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

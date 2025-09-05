@@ -2,7 +2,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
+// import { GoogleLogin } from "@react-oauth/google";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -12,7 +12,8 @@ export default function Login() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password);
-      navigate("http://localhost:5173/home");
+      // navigate("http://localhost:5173/home");
+      navigate("/")
     } catch (err) {
       alert(err.message);
     }
@@ -73,7 +74,7 @@ export default function Login() {
         </div>
 
         {/* Google Login */}
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <GoogleLogin
             onSuccess={handleSuccess}
             onError={handleGoogleError}
@@ -83,7 +84,7 @@ export default function Login() {
             theme="outline"
             width="100%"
           />
-        </div>
+        </div> */}
 
         {/* Footer */}
         <p className="text-center text-gray-500 text-sm mt-6">

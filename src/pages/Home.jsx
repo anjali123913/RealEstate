@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import WhatWeDo from "../components/WhatWeDo";
 import Newsletter from "../components/Newsletter";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate=useNavigate()
   const properties = [
     {
       id: 1,
@@ -58,6 +60,7 @@ export default function Home() {
               }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 font-semibold shadow-lg"
+              onClick={() => navigate("/signup")}   // ✅ sahi route daalna
             >
               Get Started
             </motion.button>
