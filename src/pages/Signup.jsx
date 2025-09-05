@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,7 @@ export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
   const navigate = useNavigate();
 
+  // ✅ Handle Email/Password Signup
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirm) {
@@ -21,9 +22,22 @@ export default function Signup() {
     }
   };
 
+  // ✅ Handle Google Signup/Login
+  const handleGoogleSignup = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      console.log("Google User:", result.user);
+      navigate("/home"); // redirect to homepage after signup
+    } catch (err) {
+      console.error("Google signup error:", err.message);
+      alert("Google Signup failed: " + err.message);
+    }
+  };
+
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 border rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Sign Up</h2>
+    <div className="max-w-md mx-auto mt-20 p-6 border rounded shadow bg-white">
+      <h2 className="text-xl font-bold mb-4 text-center">Sign Up</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -57,6 +71,22 @@ export default function Signup() {
           Sign Up
         </button>
       </form>
+
+      {/* ✅ Google Auth Button */}
+      <div className="mt-6 text-center">
+        <p className="text-gray-600 mb-2">Or continue with</p>
+        <button
+          onClick={handleGoogleSignup}
+          className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-2 rounded hover:bg-red-600"
+        >
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google Logo"
+            className="w-5 h-5"
+          />
+          Continue with Google
+        </button>
+      </div>
     </div>
   );
 }
